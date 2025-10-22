@@ -94,3 +94,23 @@ graph TD
 ```
 
 Dit diagram toont de hoofdcomponenten, hun relaties en de AI-stromen (van endpoint tot deployment en self-improvement). Je kunt deze Mermaid-code direct in je README of een Markdown-viewer gebruiken voor een visueel overzicht!
+
+## AI Memory Endpoint
+
+Nieuwe endpoint: `/ai/memory`
+
+- **POST /ai/memory**: Sla een geheugenwaarde op met een key en value.
+- **GET /ai/memory/{key}**: Haal een specifieke geheugenwaarde op.
+- **GET /ai/memory**: Haal alle geheugenentries op.
+
+Voorbeeld:
+
+```json
+POST /ai/memory
+{
+  "key": "user_note",
+  "value": "Dit is een testgeheugen."
+}
+```
+
+Zie ook: `app/routes/memory.py` en unittests in `app/routes/test_memory.py`.

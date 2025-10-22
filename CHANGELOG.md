@@ -7,3 +7,10 @@
 - Volledige testdekking en CI/CD integratie
 - Railway deployment scripts toegevoegd
 - Architectuurdiagram en README verbeterd
+
+## [v0.2.0] - 2024-06-07
+
+### Toegevoegd
+
+- Nieuwe endpoint `/ai/memory` voor het opslaan en ophalen van geheugenwaarden via POST/GET.
+- Unittests toegevoegd voor geheugenendpoint (`app/routes/test_memory.py`).
