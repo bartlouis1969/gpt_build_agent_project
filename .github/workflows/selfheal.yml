@@ -1,0 +1,33 @@
+name: Self-Heal Agent
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+jobs:
+  selfheal:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install openai requests
+      - name: Download test output
+        run: |
+          gh run view ${{ github.event.workflow_run.id }} --log > test_output.txt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run self-heal agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MODEL_NAME: gpt-4
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python selfheal_agent.py
