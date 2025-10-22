@@ -46,7 +46,15 @@ def commit_and_push(branch_name):
     subprocess.run(["git", "push", "origin", branch_name], check=True)
 
 
-def create_pr(branch_name, github_token, repo, title, body):
+def create_pr(
+    branch_name,
+    github_token,
+    repo,
+    title,
+    body,
+    labels=None,
+    reviewers=None,
+):
     url = f"https://api.github.com/repos/{repo}/pulls"
     headers = {"Authorization": f"token {github_token}"}
     data = {
@@ -57,7 +65,19 @@ def create_pr(branch_name, github_token, repo, title, body):
     }
     r = requests.post(url, headers=headers, json=data)
     r.raise_for_status()
-    return r.json()
+    pr = r.json()
+    pr_number = pr["number"]
+    # Voeg labels toe
+    if labels:
+        labels_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/labels"
+        requests.post(labels_url, headers=headers, json={"labels": labels})
+    # Voeg reviewers toe
+    if reviewers:
+        reviewers_url = (
+            f"https://api.github.com/repos/{repo}/pulls/{pr_number}/requested_reviewers"
+        )
+        requests.post(reviewers_url, headers=headers, json={"reviewers": reviewers})
+    return pr
 
 
 def main():
@@ -71,12 +91,16 @@ def main():
     commit_and_push(branch_name)
     github_token = os.getenv("GITHUB_TOKEN")
     github_repo = os.getenv("GITHUB_REPOSITORY")
+    labels = ["self-heal", "auto-fix", "ci"]
+    reviewers = ["bartlouis1969"]
     pr = create_pr(
         branch_name,
         github_token,
         github_repo,
         "🤖 Self-heal: auto patch by agent",
         "Automatisch gegenereerde fix voor testfouten.",
+        labels=labels,
+        reviewers=reviewers,
     )
     print(f"PR aangemaakt: {pr['html_url']}")
 

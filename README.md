@@ -154,4 +154,12 @@ Nieuwe endpoint: `/analytics/signal-check`
 }
 ```
 
+Statistieken worden nu berekend op basis van de input:
+
+- **score**: gemiddeld rendement per trade
+- **risk**: standaarddeviatie van rendementen
+- **volatility**: standaarddeviatie van prijsveranderingen
+- **sharpe_ratio**: verhouding rendement/risico
+- **max_drawdown**: grootste daling vanaf piek
+
 Zie ook: `app/routes/signal_check.py` en unittests in `tests/test_signal_check.py`.
