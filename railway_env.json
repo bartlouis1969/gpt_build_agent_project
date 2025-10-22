@@ -1,0 +1,10 @@
+[
+  { "key": "OPENAI_API_KEY", "value": "sk-..." },
+  { "key": "MODEL_NAME", "value": "gpt-4" },
+  { "key": "DEFAULT_TEMPERATURE", "value": "0.7" },
+  { "key": "MAX_TOKENS", "value": "1000" },
+  { "key": "GPT_TIMEOUT", "value": "30" },
+  { "key": "LOG_LEVEL", "value": "INFO" },
+  { "key": "LOG_FORMAT", "value": "%(asctime)s %(levelname)s %(name)s: %(message)s" },
+  { "key": "ENV", "value": "production" }
+]

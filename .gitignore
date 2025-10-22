@@ -1,0 +1,20 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.DS_Store
+.idea/
+.vscode/
+
+# Optional: ignore test/output files
+*.log
+*.sqlite3
+*.db
+*.bak
+*.swp
+*.swo
+
+# Optional: ignore OS-specific files
+Thumbs.db
