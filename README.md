@@ -3,6 +3,7 @@
 This project is a self-improving, test-driven AI agent framework with FastAPI endpoints, full test coverage, CI/CD via GitHub Actions, and ready for deployment on Railway using Docker.
 
 ## Features
+
 - Volatility analytics module
 - AI content generator module
 - FastAPI endpoints for analytics and AI
@@ -11,25 +12,31 @@ This project is a self-improving, test-driven AI agent framework with FastAPI en
 - Ready for Docker/Railway deployment
 
 ## Quickstart
+
 1. Clone the repo
 2. Add your environment variables (e.g. `OPENAI_API_KEY`)
 3. Build and run with Docker:
+
    ```sh
    docker build -t gpt-agent .
    docker run -p 8000:8000 gpt-agent
    ```
+
 4. Visit `http://localhost:8000/health` to check status
 
 ## Railway Deployment
+
 - Push to GitHub
 - Connect repo to Railway
 - Deploy using Dockerfile
 
 ## Environment Variables
+
 - `OPENAI_API_KEY` (required)
 - `MODEL_NAME`, `DEFAULT_TEMPERATURE`, `MAX_TOKENS`, `GPT_TIMEOUT` (optional)
 
 ## License
+
 MIT
 
 
@@ -114,3 +121,37 @@ POST /ai/memory
 ```
 
 Zie ook: `app/routes/memory.py` en unittests in `app/routes/test_memory.py`.
+
+## Analytics: Signaaldetectie & Backtest
+
+Nieuwe endpoint: `/analytics/signal-check`
+
+- **POST /analytics/signal-check**: Evalueer trading-signalen op score, risico, volatiliteit en tradingstatistieken.
+
+**Input:**
+
+```json
+{
+  "signal": [1, 0, 1, -1, 0],         // 1=buy, 0=hold, -1=sell
+  "prices": [100, 102, 101, 105, 103],
+  "risk_level": "medium",            // optioneel: low | medium | high
+  "portfolio_value": 10000             // optioneel: voor sizing/simulatie
+}
+```
+
+**Output:**
+
+```json
+{
+  "score": 0.82,
+  "risk": 0.45,
+  "volatility": 0.12,
+  "details": {
+    "trades_executed": 3,
+    "sharpe_ratio": 1.12,
+    "max_drawdown": 0.06
+  }
+}
+```
+
+Zie ook: `app/routes/signal_check.py` en unittests in `tests/test_signal_check.py`.
