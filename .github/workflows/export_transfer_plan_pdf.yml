@@ -1,0 +1,23 @@
+name: Export transfer_plan.md to PDF
+
+on:
+  push:
+    paths:
+      - 'docs/transfer_plan.md'
+  workflow_dispatch:
+
+jobs:
+  export-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Convert Markdown to PDF
+        run: pandoc docs/transfer_plan.md -o exports/transfer_plan.pdf
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: transfer_plan_pdf
+          path: exports/transfer_plan.pdf

@@ -46,6 +46,16 @@ repos:
 ```
 
 ---
+
+## 📄 Overdrachtsdocument & Stappenplan
+
+Het volledige overdrachtsdocument en stappenplan vind je hier:
+
+- [Transfer Plan (Markdown)](docs/transfer_plan.md)
+- [Transfer Plan (PDF, automatisch gegenereerd)](exports/transfer_plan.pdf)
+
+Gebruik dit als onboardinggids voor nieuwe teamleden, adviseurs en co-agents. Je kunt het document ook delen via e-mail of als bijlage bij een GitHub-release.
+
 # GPT Build Agent Project
 
 ## 🚀 Draaiboek & Quick Start
@@ -302,13 +312,13 @@ Je project evolueert naar een AI-gedreven ecosysteem. Hieronder de logische groe
 
 ### 🎮 2. Spel-geïntegreerde AI & Trading
 
-**Spelidee: "TradeQuest – AI vs. Market"**
+## Spelidee: "TradeQuest – AI vs. Market"
 
-* 🎯 Doel: Speler moet met hulp van een AI-agent trading-uitdagingen voltooien in een gamified omgeving.
-* 🤖 AI-rol: NPC’s of medespelers met GPT-intelligentie, of GPT als je coach.
-* 📈 Live Market Feed: Gebruik de EA als backend-logica om trades te simuleren of live te spelen.
-* 🔄 Realtime Integratie: AI-agent adviseert in-game, EA voert uit in demo/live.
-* 🛠️ Tech Stack: Unity of Godot + Python FastAPI bridge + GPT4/GPTs.
+- 🎯 Doel: Speler moet met hulp van een AI-agent trading-uitdagingen voltooien in een gamified omgeving.
+- 🤖 AI-rol: NPC’s of medespelers met GPT-intelligentie, of GPT als je coach.
+- 📈 Live Market Feed: Gebruik de EA als backend-logica om trades te simuleren of live te spelen.
+- 🔄 Realtime Integratie: AI-agent adviseert in-game, EA voert uit in demo/live.
+- 🛠️ Tech Stack: Unity of Godot + Python FastAPI bridge + GPT4/GPTs.
 
 > ✅ Uniek selling point: Je AI is niet alleen helper, maar speelt *mee* in het spel.
 
@@ -342,8 +352,8 @@ Laat mij nu een plan maken voor een GPT-integrated game die met jouw agent praat
 
 Of kies:
 
-* `plugin` – externe integraties (TradingView, news, alerts)
-* `edu` – AI-trading coach of leerplatform
-* `platform` – alles modulair met dashboards en user management
+- `plugin` – externe integraties (TradingView, news, alerts)
+- `edu` – AI-trading coach of leerplatform
+- `platform` – alles modulair met dashboards en user management
 
 Het volledige draaiboek en groeiplan is nu toegevoegd aan het project in een duidelijk gestructureerd document. Deelbaar met co-agents en bruikbaar als basis voor uitbreidingen, releases of planning.
