@@ -2,7 +2,6 @@
 Test voor config/loader.py
 """
 
-
 import unittest
 from config.loader import (
     get_openai_api_key,

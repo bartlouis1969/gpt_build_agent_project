@@ -24,12 +24,9 @@ jobs:
       - name: Lint with ruff
         run: |
           ruff .
-      - name: Run unittests
+      - name: Run all tests
         run: |
-          python -m unittest discover -s config
-          python -m unittest discover -s core/analytics
-          python -m unittest discover -s core/ai
-          python -m unittest discover -s app/routes
+          python run_tests.py
       - name: Report failures to self_improving_agent (optional)
         if: failure()
         run: |
