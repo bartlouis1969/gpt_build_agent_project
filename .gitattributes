@@ -1,2 +1,27 @@
 * text=auto
-*.py text eol=lf
+
+# Tekstformaten (LF)
+*.py   text eol=lf
+*.pyi  text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+Makefile text eol=lf
+*.sh   text eol=lf
+
+# Windows scripts (CRLF ok)
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+
+# Binaries nooit normaliseren
+*.png  -text
+*.jpg  -text
+*.jpeg -text
+*.gif  -text
+*.pdf  -text
+*.exe  -text
+*.dll  -text
+*.zip  -text
+*.7z   -text
