@@ -3,12 +3,14 @@ Unittest voor POST /ai/generate endpoint in ai_generator.py
 """
 
 import unittest
-from fastapi.testclient import TestClient
-from app.routes.ai_generator import router
+
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
+from app.routes.ai_generator import router
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(router, prefix="/ai")
 
 
 class TestAIGenerateEndpoint(unittest.TestCase):

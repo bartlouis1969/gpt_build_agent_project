@@ -1,7 +1,9 @@
+import os
+
 import pytest
 from fastapi.testclient import TestClient
+
 from app.main import app
-import os
 
 PERFORMANCE_FILE = "performance.json"
 
@@ -33,9 +35,7 @@ def test_add_and_get_performance():
         "notes": "Test trade entry.",
     }
     # Add trade
-    response = client.post(
-        "/analytics/performance", json=trade_payload, headers=headers
-    )
+    response = client.post("/analytics/performance", json=trade_payload, headers=headers)
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "saved"

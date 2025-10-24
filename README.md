@@ -1,62 +1,6 @@
----
-
-## 🧪 Test & Pre-commit Workflow
-
-### Foutloos testen
-1. Open terminal 1, activeer je omgeving, en start de server:
-    ```pwsh
-    & C:/Users/bartl/Documents/gpt_build_agent_project/venv/Scripts/Activate.ps1
-    python -m app.main
-    ```
-    Laat deze terminal open zodat de server actief blijft.
-
-2. Open terminal 2, activeer opnieuw je omgeving, en voer de tests uit:
-    ```pwsh
-    & C:/Users/bartl/Documents/gpt_build_agent_project/venv/Scripts/Activate.ps1
-    pytest --maxfail=1 --disable-warnings
-    ```
-
-### Pre-commit setup
-1. Installeer pre-commit:
-    ```pwsh
-    pip install pre-commit
-    ```
-2. Voeg het configuratiebestand `.pre-commit-config.yaml` toe (zie hieronder).
-3. Activeer pre-commit hooks:
-    ```pwsh
-    pre-commit install
-    ```
-Nu wordt je code automatisch gecontroleerd (lint, formatting, etc.) vóór elke commit.
-
-Voorbeeld `.pre-commit-config.yaml`:
-```yaml
-repos:
-  - repo: https://github.com/psf/black
-     rev: 24.3.0
-     hooks:
-        - id: black
-  - repo: https://github.com/PyCQA/flake8
-     rev: 7.0.0
-     hooks:
-        - id: flake8
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-     rev: v2.0.4
-     hooks:
-        - id: autopep8
-```
-
----
-
-## 📄 Overdrachtsdocument & Stappenplan
-
-Het volledige overdrachtsdocument en stappenplan vind je hier:
-
-- [Transfer Plan (Markdown)](docs/transfer_plan.md)
-- [Transfer Plan (PDF, automatisch gegenereerd)](exports/transfer_plan.pdf)
-
-Gebruik dit als onboardinggids voor nieuwe teamleden, adviseurs en co-agents. Je kunt het document ook delen via e-mail of als bijlage bij een GitHub-release.
-
 # GPT Build Agent Project
+
+[![codecov](https://codecov.io/gh/bartlouis1969/gpt_build_agent_project/branch/main/graph/badge.svg)](https://codecov.io/gh/bartlouis1969/gpt_build_agent_project)
 
 ## 🚀 Draaiboek & Quick Start
 
@@ -73,7 +17,86 @@ Welkom bij het GPT Build Agent Project! Dit project bevat een compleet draaiboek
 
 ---
 
+## 🧪 Test & Pre-commit Workflow
+
+### Foutloos testen
+
+1. Open terminal 1, activeer je omgeving, en start de server:
+
+    ```pwsh
+    python -m app.main
+    ```
+
+    Laat deze terminal open zodat de server actief blijft.
+2. Open terminal 2, activeer opnieuw je omgeving, en voer de tests uit:
+
+    ```pwsh
+    pytest --maxfail=1 --disable-warnings
+    ```
+
+### Pre-commit setup
+
+1. Installeer pre-commit:
+
+    ```pwsh
+    pip install pre-commit
+    ```
+
+2. Voeg het configuratiebestand `.pre-commit-config.yaml` toe (zie hieronder).
+3. Activeer pre-commit hooks:
+
+    ```pwsh
+    pre-commit install
+    ```
+
+Nu wordt je code automatisch gecontroleerd (lint, formatting, etc.) vóór elke commit.
+Voorbeeld `.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: "https://github.com/psf/black"
+    rev: 24.3.0
+    hooks:
+      - id: black
+  - repo: "https://github.com/PyCQA/flake8"
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+  - repo: "https://github.com/pre-commit/mirrors-autopep8"
+    rev: v2.0.4
+    hooks:
+      - id: autopep8
+```
+
+---
+
+## 📄 Overdrachtsdocument & Stappenplan
+
+Het volledige overdrachtsdocument en stappenplan vind je hier:
+
+- [Transfer Plan (Markdown)](docs/transfer_plan.md)
+- [Transfer Plan (PDF, automatisch gegenereerd)](exports/transfer_plan.pdf)
+
+Gebruik dit als onboardinggids voor nieuwe teamleden, adviseurs en co-agents. Je kunt het document ook delen via e-mail of als bijlage bij een GitHub-release.
+
+---
+
+Welkom bij het GPT Build Agent Project! Dit project bevat een compleet draaiboek met alle stappen, instellingen en uitbreidingen voor de AI-agent, EA-integratie, domeinkoppeling, CI/CD, brokers, deployment en meer.
+
+- **Draaiboek:** Zie het bestand `EA_test_checklist.md` voor het volledige overzicht van alle stappen en best practices.
+- **Quick Start:**
+    1. Clone deze repository.
+    2. Voer het setup script uit: `python setup_agent.py` (zie onder).
+    3. Volg de instructies in het draaiboek en het script voor een vliegende start.
+    4. Bekijk de secties hieronder voor meer details over features, deployment en plugins.
+
+> 📖 **Tip:** Het draaiboek is altijd actueel en overdraagbaar. Ideaal voor nieuwe teamleden, testers en als geheugensteun voor jezelf.
+
+---
+
 This project is a self-improving, test-driven AI agent framework with FastAPI endpoints, full test coverage, CI/CD via GitHub Actions, and ready for deployment on Railway using Docker.
+
+
 
 ## Features
 
@@ -83,6 +106,8 @@ This project is a self-improving, test-driven AI agent framework with FastAPI en
 - Full unit and endpoint tests
 - CI/CD pipeline
 - Ready for Docker/Railway deployment
+- 📘 Game: speelmechaniek en design ([game_script.md](docs/game_script.md))
+- 🧠 Evolutionair tradingplatform: zelflerende EA, FTMO-bescherming, copy trading, premium signalen, accountbeheer. Zie [game_design.md](docs/game_design.md) en modules: `ea_config.py`, `mt5_connector.py`, `player_settings.py`.
 
 ## Quickstart
 
@@ -346,14 +371,71 @@ Je project evolueert naar een AI-gedreven ecosysteem. Hieronder de logische groe
 
 ---
 
-## 🧭 Suggestie voor directe vervolgstap
 
-Laat mij nu een plan maken voor een GPT-integrated game die met jouw agent praat én de EA aanstuurt.
+---
 
-Of kies:
+## ⚡ Automatisering & Alerts
 
-- `plugin` – externe integraties (TradingView, news, alerts)
-- `edu` – AI-trading coach of leerplatform
-- `platform` – alles modulair met dashboards en user management
+Je project bevat nu volledige automatisering voor financiële monitoring en synchronisatie:
 
-Het volledige draaiboek en groeiplan is nu toegevoegd aan het project in een duidelijk gestructureerd document. Deelbaar met co-agents en bruikbaar als basis voor uitbreidingen, releases of planning.
+### Workflows
+
+| Workflow                | Trigger                | Functie                                              |
+|-------------------------|------------------------|------------------------------------------------------|
+| monthly_export.yml      | 1e van de maand        | Maakt maandelijkse export van kosten/credits         |
+| budget_alerts.yml       | Dagelijks & bij push   | Stuurt Discord-alert bij budgetoverschrijding        |
+| sync_finance.yml        | Dagelijks              | Synchroniseert data met Google Sheets & Notion       |
+
+### Secrets & Placeholders
+
+Vul deze in via GitHub > Settings > Secrets of in `.env`:
+
+- `DISCORD_WEBHOOK_URL`: Webhook URL voor Discord alerts
+- `GOOGLE_SHEETS_TOKEN`: Service account JSON voor Google Sheets API
+- `GOOGLE_SHEETS_ID`: Naam of ID van je Google Sheet
+- `NOTION_API_KEY`: Integratie-token voor Notion API
+- `NOTION_DATABASE_ID`: Database ID voor Notion sync
+
+Zie ook: `SECRETS_TEMPLATE.md` voor een overzicht.
+
+### Activatie
+
+1. Vul de secrets in
+2. Push naar GitHub
+3. Workflows draaien automatisch volgens schema
+
+Je ontvangt alerts, exports en synchronisaties zonder handmatige acties. Vervang placeholders voor je eigen integraties.
+
+---
+
+## Environment variables
+
+| Var                 | Default              | Uitleg |
+|---------------------|----------------------|--------|
+| `APP_BASE_URL`      | `http://127.0.0.1:8000` | Base-URL voor integratietests (token/performance checks). |
+| `OPENAI_API_KEY`    | _(leeg)_             | Echte key triggert echte OpenAI-calls. Leeg, `sk-test*`, `dummy` of `placeholder` gebruikt de stub. |
+| `OPENAI_MODEL`      | `gpt-4`              | Modelnaam voor echte OpenAI-calls. |
+| `TRAINER_DAEMON_DEBUG` | `0`               | Zet op `1` om de trainer-daemon kort te laten “slapen” bij lokaal testen. |
+
+### Test-stubbing
+
+- In `core/ai/generator.py` zit een veilige fallback: zonder geldige `OPENAI_API_KEY` wordt **geen** netwerkcall gedaan en komt er een deterministisch resultaat terug.
+- In `conftest.py` draait tijdens tests een mini stub-server voor `POST /ai/generate` (lokaal). Hierdoor zijn tests offline en snel.
+- Testprofielen:
+  - Unit suite (zonder integratie):
+    ```bash
+    pytest -q -m "not integration"
+    ```
+  - Volledige suite (start je FastAPI-app lokaal):
+    ```bash
+    uvicorn app.main:app --reload
+    pytest -q
+    ```
+
+### Code style
+
+- `isort`, `black`, `flake8` staan geconfigureerd.
+  Snelle check:
+  ```bash
+  isort .; black .; flake8
+  ```

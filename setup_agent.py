@@ -1,6 +1,6 @@
 import os
-import sys
 import subprocess
+import sys
 import webbrowser
 
 
@@ -50,11 +50,9 @@ def create_env():
 def install_requirements():
     if os.path.exists(REQUIREMENTS_PATH):
         print("[INFO] Installeer requirements...")
-        result = subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-r", REQUIREMENTS_PATH]
-        )
+        result = subprocess.run([sys.executable, "-m", "pip", "install", "-r", REQUIREMENTS_PATH])
         if result.returncode == 0:
-            print("[OK] Dependencies geïnstalleerd.")
+            print("[OK] Dependencies ge nstalleerd.")
         else:
             print("[FOUT] Installatie dependencies mislukt.")
             sys.exit(1)
@@ -65,9 +63,7 @@ def install_requirements():
 
 def run_tests():
     print("[INFO] Draai test suite...")
-    result = subprocess.run(
-        [sys.executable, "-m", "pytest", "--maxfail=1", "--disable-warnings"]
-    )
+    result = subprocess.run([sys.executable, "-m", "pytest", "--maxfail=1", "--disable-warnings"])
 
     if result.returncode == 0:
         print("[OK] Alle tests geslaagd.")

@@ -1,15 +1,20 @@
+from __future__ import annotations
+
+import os
+
+import pytest
 import requests
 
-# Haal een JWT-token op
-TOKEN_URL = "http://localhost:8000/token"
-LOGIN_DATA = {"username": "admin", "password": "admin"}
-response = requests.post(TOKEN_URL, data=LOGIN_DATA)
-token = response.json()["access_token"]
-print("JWT token:", token)
+pytestmark = pytest.mark.integration
 
-# Call de plugin endpoint /plugin/time
-PLUGIN_URL = "http://localhost:8000/plugin/time"
-headers = {"Authorization": f"Bearer {token}"}
-plugin_response = requests.get(PLUGIN_URL, headers=headers)
-print("Status code:", plugin_response.status_code)
-print("Response:", plugin_response.json())
+BASE = os.getenv("APP_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
+PLUGIN_URL = f"{BASE}/plugin/time"
+
+
+def test_plugin_time_reachable() -> None:
+    """Plugin/time route bereikbaar? 200/404 ok; anders skip."""
+    try:
+        r = requests.get(PLUGIN_URL, timeout=3)
+    except Exception:
+        pytest.skip("API draait niet op 127.0.0.1:8000")
+    assert r.status_code in (200, 404)

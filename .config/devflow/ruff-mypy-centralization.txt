@@ -1,0 +1,16 @@
+Ruff/Mypy centralisatie
+-----------------------
+
+- Ruff gebruikt expliciet `ruff.toml` (pre-commit + CI met `--config=ruff.toml`).
+- Mypy gebruikt expliciet `mypy.ini` (pre-commit + CI met `--config-file=mypy.ini`).
+- Hierdoor heeft een bestaande `[tool.ruff]` of `[tool.mypy]` sectie in `pyproject.toml` geen effect.
+
+Aanbevolen (optioneel):
+- Verwijder dubbele of verouderde secties uit `pyproject.toml` als housekeeping.
+  Secties om te verwijderen indien aanwezig:
+  - `[tool.ruff]`, `[tool.ruff.lint]`, `[tool.ruff.format]`
+  - `[tool.mypy]`
+
+Verificatie:
+- `ruff config --show --config ruff.toml` toont de gebruikte instellingen.
+- `mypy --show-config --config-file mypy.ini` toont de gebruikte instellingen.

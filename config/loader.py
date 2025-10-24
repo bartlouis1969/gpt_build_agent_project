@@ -4,8 +4,9 @@ config/loader.py
 Beheert laden en valideren van configuratie.
 """
 
-import os
 import logging
+import os
+
 from dotenv import load_dotenv
 
 
@@ -67,12 +68,10 @@ load_environment()
 
 
 def get_openai_api_key() -> str:
-    key = os.getenv("OPENAI_API_KEY")
+    key = os.getenv("OPENAI_API_KEY", "")
     if not key or not key.startswith("sk-"):
         logger.critical("\u274c Ongeldige of ontbrekende OPENAI_API_KEY.")
-        raise RuntimeError(
-            'OPENAI_API_KEY ontbreekt of is ongeldig. Moet beginnen met "sk-".'
-        )
+        raise RuntimeError('OPENAI_API_KEY ontbreekt of is ongeldig. Moet beginnen met "sk-".')
     return key
 
 
@@ -87,9 +86,7 @@ def get_default_temperature() -> float:
             raise ValueError
         return temp
     except ValueError:
-        logger.warning(
-            "Onjuiste waarde voor DEFAULT_TEMPERATURE, standaard 0.5 gebruikt."
-        )
+        logger.warning("Onjuiste waarde voor DEFAULT_TEMPERATURE, standaard 0.5 gebruikt.")
         return 0.5
 
 

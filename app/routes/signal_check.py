@@ -1,59 +1,101 @@
+from __future__ import annotations
+
+from typing import TypedDict
+
 from fastapi import APIRouter
-from core.analytics.signal_check_models import (
-    SignalCheckRequest,
-    SignalCheckResponse,
-    SignalCheckDetails,
-)
+from pydantic import BaseModel
+
+
+# TypedDicts for mypy/static typing
+class SignalStats(TypedDict):
+    n: int
+    sharpe_ratio: float
+    max_drawdown: float
+    mean_return: float
+    volatility: float
+    trades_executed: int
+
+
+class SignalResponse(TypedDict, total=False):
+    score: float
+    risk: float
+    volatility: float
+    sharpe_ratio: float
+    max_drawdown: float
+    details: SignalStats
+
 
 router = APIRouter()
 
 
-@router.post("/analytics/signal-check", response_model=SignalCheckResponse)
-def signal_check(request: SignalCheckRequest) -> SignalCheckResponse:
-    import numpy as np
+class SignalPayload(BaseModel):
+    signal: list[float]
+    prices: list[float]
+    risk_level: str
+    portfolio_value: float
 
-    signals = np.array(request.signal)
-    prices = np.array(request.prices)
-    trades_executed = int(np.sum(signals != 0))
 
-    # Simuleer eenvoudige strategie: koop bij 1, verkoop bij -1
-    returns_list = []
-    position = 0
-    entry_price = 0.0
-    for s, p in zip(signals, prices):
-        if s == 1 and position == 0:
-            position = 1
-            entry_price = float(p)
-        elif s == -1 and position == 1:
-            returns_list.append(float((float(p) - entry_price) / entry_price))
-            position = 0
-    if position == 1:
-        returns_list.append(float((float(prices[-1]) - entry_price) / entry_price))
-    returns = (
-        np.array(returns_list, dtype=float)
-        if returns_list
-        else np.array([0.0], dtype=float)
-    )
+def _pct_changes(vals: list[float]) -> list[float]:
+    if len(vals) < 2:
+        return []
+    return [(vals[i] - vals[i - 1]) / vals[i - 1] for i in range(1, len(vals))]
 
-    # Score: gemiddelde rendement
-    score = float(np.mean(returns))
-    # Risico: standaarddeviatie van rendementen
-    risk = float(np.std(returns))
-    # Volatiliteit: standaarddeviatie van prijsveranderingen
-    volatility = float(np.std(np.diff(prices)))
-    # Sharpe ratio: gemiddeld rendement / risico
-    sharpe_ratio = float(score / risk) if risk != 0 else 0.0
-    # Max drawdown: grootste daling vanaf piek
-    cum_returns = np.cumprod(1 + returns)
-    peak = np.maximum.accumulate(cum_returns)
-    drawdown = (cum_returns - peak) / peak
-    max_drawdown = float(np.min(drawdown)) if len(drawdown) > 0 else 0.0
 
-    details = SignalCheckDetails(
-        trades_executed=trades_executed,
-        sharpe_ratio=sharpe_ratio,
-        max_drawdown=max_drawdown,
-    )
-    return SignalCheckResponse(
-        score=score, risk=risk, volatility=volatility, details=details
-    )
+def _mean(xs: list[float]) -> float:
+    return sum(xs) / len(xs) if xs else 0.0
+
+
+def _std(xs: list[float]) -> float:
+    if len(xs) < 2:
+        return 0.0
+    m = _mean(xs)
+    var = sum((x - m) ** 2 for x in xs) / (len(xs) - 1)
+    return var**0.5
+
+
+def _max_drawdown(vals: list[float]) -> float:
+    peak = vals[0] if vals else 0.0
+    mdd = 0.0
+    for v in vals:
+        if v > peak:
+            peak = v
+        drawdown = (peak - v) / peak if peak else 0.0
+        if drawdown > mdd:
+            mdd = drawdown
+    return float(mdd)
+
+
+@router.post("/signal-check")
+def signal_check(payload: SignalPayload) -> SignalResponse:
+    changes = _pct_changes(payload.prices)
+    vol = _std(changes)
+    mean_ret = _mean(changes)
+    sharpe = (mean_ret / vol) if vol else 0.0
+
+    sig_adj = _mean(payload.signal[: len(changes)]) if changes else 0.0
+    score = float(100.0 * (0.5 * mean_ret - 0.3 * vol + 0.2 * sig_adj))
+
+    base = payload.portfolio_value or 1.0
+    curve = [base]
+    for c in changes:
+        curve.append(curve[-1] * (1.0 + c))
+    mdd = _max_drawdown(curve)
+
+    trades_executed = sum(1 for s in payload.signal if s != 0)
+    stats: SignalStats = {
+        "n": len(changes),
+        "sharpe_ratio": float(sharpe),
+        "max_drawdown": float(mdd),
+        "mean_return": float(mean_ret),
+        "volatility": float(vol),
+        "trades_executed": int(trades_executed),
+    }
+    result: SignalResponse = {
+        "score": float(score),
+        "risk": float(abs(sig_adj)),
+        "volatility": float(vol),
+        "sharpe_ratio": float(sharpe),
+        "max_drawdown": float(mdd),
+        "details": stats,
+    }
+    return result

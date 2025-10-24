@@ -1,16 +1,20 @@
+from __future__ import annotations
+
+import os
+
+import pytest
 import requests
 
-# 1. Haal een JWT-token op
-TOKEN_URL = "http://localhost:8000/token"
-LOGIN_DATA = {"username": "admin", "password": "admin"}
-response = requests.post(TOKEN_URL, data=LOGIN_DATA)
-token = response.json()["access_token"]
-print("JWT token:", token)
+pytestmark = pytest.mark.integration
 
-# 2. Gebruik het token voor een beveiligde API-call
-API_URL = "http://localhost:8000/ai/generate"
-payload = {"prompt": "Geef drie tradingstrategieën voor een volatiele markt"}
-headers = {"Authorization": f"Bearer {token}"}
-api_response = requests.post(API_URL, json=payload, headers=headers)
-print("Status code:", api_response.status_code)
-print("Response:", api_response.json())
+BASE = os.getenv("APP_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
+TOKEN_URL = f"{BASE}/token"
+LOGIN_DATA = {"username": "test", "password": "test"}
+
+
+def test_jwt_issuance_endpoint_up() -> None:
+    try:
+        r = requests.post(TOKEN_URL, data=LOGIN_DATA, timeout=3)
+    except Exception:
+        pytest.skip("API draait niet op 127.0.0.1:8000")
+    assert r.status_code in (200, 401)

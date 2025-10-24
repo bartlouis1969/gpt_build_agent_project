@@ -1,12 +1,11 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
 
 
 class SignalCheckRequest(BaseModel):
-    signal: List[int] = Field(..., description="1=buy, 0=hold, -1=sell")
-    prices: List[float]
-    risk_level: Optional[str] = Field(None, description="low | medium | high")
-    portfolio_value: Optional[float] = Field(None, description="Voor sizing/simulatie")
+    signal: list[int] = Field(..., description="1=buy, 0=hold, -1=sell")
+    prices: list[float]
+    risk_level: str | None = Field(None, description="low | medium | high")
+    portfolio_value: float | None = Field(None, description="Voor sizing/simulatie")
 
 
 class SignalCheckDetails(BaseModel):

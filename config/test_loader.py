@@ -3,12 +3,13 @@ Test voor config/loader.py
 """
 
 import unittest
+
 from config.loader import (
-    get_openai_api_key,
-    get_model_name,
     get_default_temperature,
-    get_max_tokens,
     get_gpt_timeout,
+    get_max_tokens,
+    get_model_name,
+    get_openai_api_key,
 )
 
 

@@ -6,6 +6,7 @@ FastAPI endpoint voor volatiliteitsanalyse.
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+
 from core.analytics.volatility import calculate_volatility
 
 router = APIRouter()
@@ -26,4 +27,4 @@ def analyze_volatility(request: VolatilityRequest):
         vol = calculate_volatility(request.prices, request.window)
         return VolatilityResponse(volatilities=vol)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e

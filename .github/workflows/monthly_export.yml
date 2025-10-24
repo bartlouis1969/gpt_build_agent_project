@@ -1,0 +1,30 @@
+name: Monthly Finance Export
+
+on:
+  schedule:
+    - cron: "0 3 1 * *"  # 1st day of month at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run monthly export
+        run: python finance/export_monthly_report.py
+      - name: Move export to reports/
+        run: |
+          mkdir -p reports
+          mv exports/*.csv reports/ || true
+      - name: Upload reports artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: monthly-finance-reports
+          path: reports/*.csv

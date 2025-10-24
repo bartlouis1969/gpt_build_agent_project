@@ -1,43 +1,39 @@
+from __future__ import annotations
+
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from datetime import datetime
-
 
 router = APIRouter()
 
-# In-memory memory store
-memory_store = {}
 
-
-class MemoryEntry(BaseModel):
+class MemoryItem(BaseModel):
     key: str
     value: str
 
 
-class MemoryResponse(BaseModel):
-    key: str
-    value: str
-    timestamp: datetime
+_MEMORY: dict[str, dict] = {}  # store with timestamp
 
 
-@router.post("/ai/memory", response_model=MemoryResponse)
-def set_memory(entry: MemoryEntry):
-    now = datetime.utcnow()
-    memory_store[entry.key] = {"value": entry.value, "timestamp": now}
-    return {"key": entry.key, "value": entry.value, "timestamp": now}
+@router.post("/memory")
+def set_memory(item: MemoryItem) -> dict:
+    payload = {
+        "key": item.key,
+        "value": item.value,
+        "timestamp": datetime.now(UTC).isoformat(),
+    }
+    _MEMORY[item.key] = payload
+    return payload
 
 
-@router.get("/ai/memory/{key}", response_model=MemoryResponse)
-def get_memory(key: str):
-    if key not in memory_store:
+@router.get("/memory")
+def get_all_memory() -> list[dict]:
+    return list(_MEMORY.values())
+
+
+@router.get("/memory/{key}")
+def get_memory_key(key: str) -> dict:
+    if key not in _MEMORY:
         raise HTTPException(status_code=404, detail="Key not found")
-    entry = memory_store[key]
-    return {"key": key, "value": entry["value"], "timestamp": entry["timestamp"]}
-
-
-@router.get("/ai/memory")
-def get_all_memory():
-    return [
-        {"key": k, "value": v["value"], "timestamp": v["timestamp"]}
-        for k, v in memory_store.items()
-    ]
+    return _MEMORY[key]

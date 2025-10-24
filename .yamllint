@@ -1,0 +1,33 @@
+# .yamllint
+extends: default
+
+rules:
+  indentation:
+    spaces: 2                 # <-- was 'indent'; moet 'spaces'
+    indent-sequences: consistent
+    check-multi-line-strings: false
+
+  line-length:
+    max: 120
+    allow-non-breakable-words: true
+
+  trailing-spaces: enable
+  new-lines:
+    type: unix
+
+  truthy:
+    allowed-values: ["true", "false", "on", "off", "yes", "no"]
+
+  document-start:
+    present: false            # GitHub Actions hebben meestal geen '---'
+
+  comments:
+    require-starting-space: true
+
+  empty-lines:
+    max: 2
+
+  braces: enable
+  brackets: enable
+  colons: enable
+  commas: enable

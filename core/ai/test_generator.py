@@ -1,23 +1,20 @@
-"""
-Test voor core/ai/generator.py
-"""
+from __future__ import annotations
 
-import sys
 import os
 import unittest
+
 from core.ai.generator import generate_content
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-
+@unittest.skipUnless(os.getenv("OPENAI_API_KEY"), "OPENAI_API_KEY ontbreekt; test wordt geskipt")
 class TestGenerator(unittest.TestCase):
-    def test_generate_content(self):
-        prompt = "Geef drie alternatieve trading headlines " "voor een bullish markt."
-        try:
-            result = generate_content(prompt)
-            self.assertIsInstance(result, str)
-        except Exception as e:
-            self.fail(f"generate_content raised an exception: {e}")
+    def test_generate_content(self) -> None:
+        prompt = "Geef drie alternatieve trading headlines voor een bullish markt."
+        result = generate_content(prompt)
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, str)
+        if result is not None:
+            self.assertTrue(len(result) > 0)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,14 @@
+## ---- Ruff config (single-source-of-truth) ----
+target-version = "py311"
+line-length = 100
+extend-exclude = ["build", "dist", ".venv", ".git", ".mypy_cache", "tests/fixtures"]
+
+[lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "C4", "RUF"]
+ignore = ["E203"]  # compat met Black
+preview = true
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

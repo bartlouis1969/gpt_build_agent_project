@@ -1,0 +1,4 @@
+date,category,amount,description,user
+2025-10-01,hosting,25.00,"Railway subscription","admin"
+2025-10-05,api,10.00,"OpenAI usage","admin"
+2025-10-10,plugin,5.00,"Telegram plugin","admin"

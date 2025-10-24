@@ -1,6 +1,7 @@
-import os
 import json
+import os
 import subprocess
+
 import requests
 from openai import OpenAI
 
@@ -8,7 +9,7 @@ from openai import OpenAI
 def load_lessons(path="lessons.json"):
     if not os.path.exists(path):
         return []
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -40,9 +41,7 @@ def create_branch(branch_name):
 
 def commit_and_push(branch_name):
     subprocess.run(["git", "add", "."], check=True)
-    subprocess.run(
-        ["git", "commit", "-m", "🤖 Self-heal: auto patch by agent"], check=True
-    )
+    subprocess.run(["git", "commit", "-m", "   Self-heal: auto patch by agent"], check=True)
     subprocess.run(["git", "push", "origin", branch_name], check=True)
 
 
@@ -73,16 +72,14 @@ def create_pr(
         requests.post(labels_url, headers=headers, json={"labels": labels})
     # Voeg reviewers toe
     if reviewers:
-        reviewers_url = (
-            f"https://api.github.com/repos/{repo}/pulls/{pr_number}/requested_reviewers"
-        )
+        reviewers_url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/requested_reviewers"
         requests.post(reviewers_url, headers=headers, json={"reviewers": reviewers})
     return pr
 
 
 def main():
     lessons = load_lessons()
-    with open("test_output.txt", "r", encoding="utf-8") as f:
+    with open("test_output.txt", encoding="utf-8") as f:
         test_output = f.read()
     patch = generate_patch(lessons, test_output)
     branch_name = "selfheal/auto-fix"
@@ -97,7 +94,7 @@ def main():
         branch_name,
         github_token,
         github_repo,
-        "🤖 Self-heal: auto patch by agent",
+        "   Self-heal: auto patch by agent",
         "Automatisch gegenereerde fix voor testfouten.",
         labels=labels,
         reviewers=reviewers,

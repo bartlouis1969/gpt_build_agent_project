@@ -19,7 +19,5 @@ def calculate_volatility(prices, window=20):
     if len(prices) < window:
         raise ValueError("Te weinig data voor window.")
     returns = np.diff(prices) / prices[:-1]
-    volatilities = [
-        np.std(returns[max(0, i - window) : i + 1]) for i in range(len(returns))
-    ]
+    volatilities = [np.std(returns[max(0, i - window) : i + 1]) for i in range(len(returns))]
     return volatilities
