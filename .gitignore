@@ -1,20 +1,21 @@
-venv/
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.env
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Virtual env
+.venv/
+venv/
+
+# Node / tools
+node_modules/
+dist/
+build/
+
+# OS/editor
 .DS_Store
-.idea/
 .vscode/
-
-# Optional: ignore test/output files
-*.log
-*.sqlite3
-*.db
-*.bak
-*.swp
-*.swo
-
-# Optional: ignore OS-specific files
-Thumbs.db
